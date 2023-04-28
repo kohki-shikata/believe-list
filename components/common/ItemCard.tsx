@@ -1,17 +1,51 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { orderState } from '../../components/store/Order'
+import { useState } from 'react'
+import { orderState } from '@/components/store/Order'
+import { ItemCardProps } from '@/types/ItemCardProps'
+import { Order, Item } from '@/types/Order'
 
-export const ItemCard = () => {
+export const ItemCard = (props: ItemCardProps) => {
 
-  
+  const [order, setOrder] = useRecoilState<Order>(orderState)
+  const [productName, setProductName] = useState<string>()
+
+  const updateProductName = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    setOrder((order: Order) => ({
+      ...order,
+      productName: (event.target as HTMLInputElement).value
+    }))
+  }
+
+  const removeItem = (index: number) => {
+    setOrder((order: Order) => ({
+      ...order,
+      itemsList: [...order.itemsList.slice(0, index), ...order.itemsList.slice(index + 1)]
+    }))
+  }
 
   return (
-    <div className="p-4 md:p-8 bg-white shadow-md">
-      <h3 className="text-xl font-medium text-gray-900"></h3>
+    <div className="p-4 md:p-8 bg-white shadow-md mb-8">
+      <h3 className="text-xl font-medium text-gray-900 grid grid-cols-[10%,1fr,20%] bg-emerald-200">
+        <button type="button">▼</button>
+        <div className="flex flex-col md:flex-row">
+          <p>#{props.index + 1}</p>
+          <h4>{order.itemsList[props.index].productName ?? '(Product name is not set)'}</h4>
+        </div>
+        <button type="button" className="button w-full bg-red-700 text-white" onClick={() => removeItem(props.index)}>Remove</button>
+      </h3>
       <div className="grid md:grid-cols-3 gap-0 md:gap-4">
         <div className="mb-8">
           <label htmlFor="productName" className="text-sm">Product Name</label>
-          <input type="text" id="productName" placeholder="Yakult 1000" required className="text-xl p-2 border-[1px] border-gray-400 w-full" maxLength={80} />
+          <input
+            type="text" 
+            id="productName" 
+            placeholder="Yakult 1000" 
+            required 
+            className="text-xl p-2 border-[1px] border-gray-400 w-full" 
+            defaultValue={order.itemsList[props.index].productName} 
+            maxLength={80}
+            onKeyUp={e => updateProductName(e)}
+          />
         </div>
         <div className="mb-8">
           <label htmlFor="manifacturer" className="text-sm">Manifucturer or Brand</label>
