@@ -9,6 +9,10 @@ export const ItemCard = (props: ItemCardProps) => {
   const [order, setOrder] = useRecoilState<Order>(orderState)
   const [productName, setProductName] = useState<string>()
 
+  /******************************************** */
+  /* Set product name                           */
+  /******************************************** */
+
   const updateProductName = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     setOrder((order: Order) => ({
       ...order,
@@ -34,12 +38,18 @@ export const ItemCard = (props: ItemCardProps) => {
     }))
   }
 
+  /******************************************** */
+  /* Remove Item                                */
+  /******************************************** */
+
   const removeItem = (index: number) => {
     setOrder((order: Order) => ({
       ...order,
       itemsList: [...order.itemsList.slice(0, index), ...order.itemsList.slice(index + 1)]
     }))
   }
+
+  
   
   /******************************************************** */
   /* Toggle Main Panel                                      */
@@ -56,7 +66,7 @@ export const ItemCard = (props: ItemCardProps) => {
   }
 
   return (
-    <div className="bg-white shadow-md mb-8">
+    <div className={"bg-white shadow-md mb-8"}>
       <h3 className="text-xl font-medium text-gray-900 grid grid-cols-[15%,1fr,15%] md:grid-cols-[10%,1fr,10%] bg-emerald-100">
         <div className="bg-emerald-200">
           <button type="button" className={"bg-transparent w-full h-full -rotate-90" + (mainPanelState ? ' open rotate-0 transition-transform duration-300' : ' transition-transform duration-300')} onClick={toggleMainPanel}>▼</button>
