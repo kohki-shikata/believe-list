@@ -58,7 +58,7 @@ const Page: NextPageWithLayout = () => {
             <BulkInsert showBulk={showBulk} setShowBulk={setShowBulk} />
             <button onClick={() => toggleBulkModal(true)} className="button">Bulk insert</button>
             <div id="list" className="bg-slate-100 p-2 md:p-8 mb-10">
-              {order.itemsList.map((item: Item, index: number) => <ItemCard index={index} key={item.productName} />)}
+              {order.itemsList.map((item: Item, index: number) => <ItemCard index={index} key={'item-card-' + index} />)}
               <button type="button" className="block button mx-auto" onClick={addItem}>Add new item</button>
             </div>
             
