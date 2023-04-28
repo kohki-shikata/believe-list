@@ -43,13 +43,13 @@ export const ItemCard = (props: ItemCardProps) => {
 
   return (
     <div className="bg-white shadow-md mb-8">
-      <h3 className="text-xl font-medium text-gray-900 grid grid-cols-[10%,1fr,20%] bg-emerald-100">
+      <h3 className="text-xl font-medium text-gray-900 grid grid-cols-[15%,1fr,15%] md:grid-cols-[10%,1fr,10%] bg-emerald-100">
         <button type="button" className="bg-emerald-200">▼</button>
-        <div className="flex flex-col md:flex-row">
-          <p>#{props.index + 1}</p>
-          <h4>{order.itemsList[props.index].productName ? order.itemsList[props.index].productName : '(Product name is not set)'}</h4>
+        <div className="flex flex-col md:flex-row items-start md:items-center p-2 md:p-0 h-full">
+          <p className="bg-slate-800 text-white text-xs md:text-sm px-1 py-0 md:px-2 md:py-1 rounded-md md:mx-2"><span className="hidden md:inline">item&nbsp;</span>#{props.index + 1}</p>
+          <h4 className="text-xl">{order.itemsList[props.index].productName ? order.itemsList[props.index].productName : <span className="text-slate-500">(Product name is not set)</span>}</h4>
         </div>
-        <button type="button" className="button w-full bg-red-700 text-white" onClick={() => removeItem(props.index)}>Remove</button>
+        <button type="button" className="button w-full h-full px-0 bg-red-700 text-white text-xs md:text-sm" onClick={() => removeItem(props.index)}>Remove</button>
       </h3>
       <div className="itemContents p-4 md:p-8">
         <div className="grid md:grid-cols-3 gap-0 md:gap-4">
