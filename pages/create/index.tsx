@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react'
 import { useState, useEffect } from 'react'
-import Layout from '../../layouts/default'
+import Layout from '@/layouts/default'
 import Link from 'next/link'
-import NestedLayout from '../../layouts/nested'
-import Header from '../../components/common/Header'
-import BulkInsert from '../../components/common/BulkInsert'
-import ItemCard from '../../components/common/ItemCard'
+import NestedLayout from '@/layouts/nested'
+import Header from '@/components/common/Header'
+import BulkInsert from '@/components/common/BulkInsert'
+import ItemCard from '@/components/common/ItemCard'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { orderState } from '../../components/store/Order'
+import { orderState } from '@/components/store/Order'
 import type { NextPageWithLayout } from '../_app'
-import type { Order, Item } from '../../types/Order'
+import type { Order, Item } from '@/types/Order'
 
 
 const Page: NextPageWithLayout = () => {
@@ -25,7 +25,7 @@ const Page: NextPageWithLayout = () => {
 
   const addItem = () => {
     const item: Item = {
-      productName: 'test',
+      productName: '',
       quantity: 1,
       includeVAT: true
     }
@@ -46,7 +46,7 @@ const Page: NextPageWithLayout = () => {
         </div>
         <p className="text-gray-600 text-xs text-center md:text-left">The last shopping list I will never mistake, <br className="md:hidden" />finally we found.</p>
       </div>
-      <div id="contentWrap" className="grid md:grid-cols-[70vw,30vw]">
+      <div id="contentWrap" className="grid md:grid-cols-[calc(70vw_-_(100vw_-_100%)_*_0.7),calc(30vw_-_(100vw_-_100%)_*_0.3)]">
         <main id="main">
           <div className="inner p-[20px] md:p-[40px] lg:w-[1100px] lg:p-[80px] lg:mx-auto">
             <h2 className="text-xl text-gray-400 mb-3">Crete your new shopping list</h2>
@@ -58,8 +58,8 @@ const Page: NextPageWithLayout = () => {
             <BulkInsert showBulk={showBulk} setShowBulk={setShowBulk} />
             <button onClick={() => toggleBulkModal(true)} className="button">Bulk insert</button>
             <div id="list" className="bg-slate-100 p-2 md:p-8 mb-10">
-              {order.itemsList.map((item: Item) => <ItemCard key={item.productName} />)}
-              <button type="button" className="button" onClick={addItem}>Add new item</button>
+              {order.itemsList.map((item: Item, index: number) => <ItemCard index={index} key={item.productName} />)}
+              <button type="button" className="block button mx-auto" onClick={addItem}>Add new item</button>
             </div>
             
             <div className="mb-4">
@@ -83,7 +83,7 @@ const Page: NextPageWithLayout = () => {
         <div id="preview" className="hidden md:block bg-gray-200 p-10">
           <div className="bg-white p-8 min-h-[50em] sticky top-10">
             <p>{order.title.length > 0 ? order.title : '(Title is not set.)'}</p>
-            {order.itemsList ? order.itemsList.map((item: Item) => (<p key={item.productName}>{item.productName}</p>)) : ''}
+            {order.itemsList ? order.itemsList.map((item: Item, index: number) => (<p key={'item-' + index}>{item.productName}</p>)) : ''}
           </div>
         </div>
       </div>
