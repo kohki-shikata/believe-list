@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { useState } from 'react'
+import { MouseEventHandler, useState, useRef } from 'react'
 import { orderState } from '@/components/store/Order'
 import { ItemCardProps } from '@/types/ItemCardProps'
 import { Order, Item } from '@/types/Order'
@@ -40,18 +40,34 @@ export const ItemCard = (props: ItemCardProps) => {
       itemsList: [...order.itemsList.slice(0, index), ...order.itemsList.slice(index + 1)]
     }))
   }
+  
+  /******************************************************** */
+  /* Toggle Main Panel                                      */
+  /******************************************************** */
+
+  const [mainPanelState, setMainPanelState] = useState<boolean>(false)
+  const mainPanel = useRef<HTMLDivElement>(null)
+  const [mainPanelHeight, setMainPanelHight] = useState<number>(0)
+
+  const toggleMainPanel: MouseEventHandler<HTMLButtonElement> = (): void => {
+    mainPanelState === true ? setMainPanelState(false) : setMainPanelState(true)
+    setMainPanelHight(mainPanel.current?.scrollHeight as number)
+    console.log(mainPanelHeight)
+  }
 
   return (
     <div className="bg-white shadow-md mb-8">
       <h3 className="text-xl font-medium text-gray-900 grid grid-cols-[15%,1fr,15%] md:grid-cols-[10%,1fr,10%] bg-emerald-100">
-        <button type="button" className="bg-emerald-200">▼</button>
+        <div className="bg-emerald-200">
+          <button type="button" className={"bg-transparent w-full h-full -rotate-90" + (mainPanelState ? ' open rotate-0 transition-transform duration-300' : ' transition-transform duration-300')} onClick={toggleMainPanel}>▼</button>
+        </div>
         <div className="flex flex-col md:flex-row items-start md:items-center p-2 md:p-0 h-full">
           <p className="bg-slate-800 text-white text-xs md:text-sm px-1 py-0 md:px-2 md:py-1 rounded-md md:mx-2"><span className="hidden md:inline">item&nbsp;</span>#{props.index + 1}</p>
           <h4 className="text-xl">{order.itemsList[props.index].productName ? order.itemsList[props.index].productName : <span className="text-slate-500">(Product name is not set)</span>}</h4>
         </div>
         <button type="button" className="button w-full h-full px-0 bg-red-700 text-white text-xs md:text-sm" onClick={() => removeItem(props.index)}>Remove</button>
       </h3>
-      <div className="itemContents p-4 md:p-8">
+      <div ref={mainPanel} className={"mainPanel " + (mainPanelState ? ' open' : '')} style={{ height: mainPanelState ? `calc(${mainPanelHeight}px + 5rem)` : 0 }}>
         <div className="grid md:grid-cols-3 gap-0 md:gap-4">
           <div className="mb-8">
             <label htmlFor="productName" className="text-sm">Product Name</label>

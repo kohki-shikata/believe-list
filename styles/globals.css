@@ -23,4 +23,10 @@ label:has(*:checked) {
   .button {
     @apply bg-[var(--bl-link)] text-white text-base py-4 px-10 mb-10;
   }
+  .mainPanel {
+    @apply p-4 px-0 md:px-8 md:py-0 opacity-0 h-0 transition-all duration-300 ease-in-out overflow-hidden;
+    &.open {
+      @apply p-4 md:p-8 opacity-100 transition-all duration-300 ease-in-out;
+    }
+  }
 }
